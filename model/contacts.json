@@ -65,6 +65,23 @@
       "name": "kolia",
       "phone": "455-88-79",
       "email": "kolia@gmail.com"
+    },
+    {
+      "id": "96e83047-0c55-4c32-873d-98cfe9c575fb",
+      "name": "newVasia",
+      "phone": "555-55",
+      "email": "superVasia@gmail.com"
+    },
+    {
+      "id": "bad7c30e-19b7-4154-a50d-1f25ccc6891c",
+      "name": "Taras",
+      "phone": "999-999",
+      "email": "taras@gmail.com"
+    },
+    {
+      "id": "14d989d1-5ffa-49e2-b659-431c11d479c5",
+      "name": "Nazar",
+      "phone": "455-88-00"
     }
   ]
 }

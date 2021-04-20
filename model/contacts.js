@@ -16,9 +16,6 @@ const getContactById = async (contactId) => {
 
 const removeContact = async (contactId) => {
   const [record] = db.get(pathContacts).remove({ id: contactId }).write();
-  console.log("🚀 ~ file: contacts.js ~ line 19 ~ removeContact ~ [record]", [
-    record,
-  ]);
   return record;
 };
 
