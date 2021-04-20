@@ -14,7 +14,13 @@ const getContactById = async (contactId) => {
   return db.get(pathContacts).find({ id: contactId }).value();
 };
 
-const removeContact = async (contactId) => {};
+const removeContact = async (contactId) => {
+  const [record] = db.get(pathContacts).remove({ id: contactId }).write();
+  console.log("🚀 ~ file: contacts.js ~ line 19 ~ removeContact ~ [record]", [
+    record,
+  ]);
+  return record;
+};
 
 const addContact = async (body) => {
   const id = uuidv4();
@@ -26,7 +32,15 @@ const addContact = async (body) => {
   return record;
 };
 
-const updateContact = async (contactId, body) => {};
+const updateContact = async (contactId, body) => {
+  const record = await db
+    .get(pathContacts)
+    .find({ id: contactId })
+    .assign(body)
+    .value();
+  db.write();
+  return record.id ? record : null;
+};
 
 module.exports = {
   listContacts,
