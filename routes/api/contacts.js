@@ -22,7 +22,26 @@ router.get("/", async (req, res, next) => {
 });
 
 router.get("/:contactId", async (req, res, next) => {
-  res.json({ message: "template message" });
+  try {
+    const contact = await contactsModel.getContactById(req.params.contactId);
+    if (contact) {
+      return res.json({
+        status: "success",
+        code: 200,
+        data: {
+          contact,
+        },
+      });
+    } else {
+      return res.status(404).json({
+        status: "error",
+        code: 404,
+        data: "Not found",
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
 });
 
 /*
