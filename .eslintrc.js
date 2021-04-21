@@ -4,12 +4,12 @@ module.exports = {
     es2021: true,
     node: true,
   },
-  extends: ['standard'],
+  extends: ["standard", "plugin:jsonc/recommended-with-jsonc", "prettier"],
   parserOptions: {
     ecmaVersion: 12,
   },
   rules: {
-    'comma-dangle': 'off',
-    'space-before-function-paren': 'off',
+    "comma-dangle": "off",
+    "space-before-function-paren": "off",
   },
-}
+};
