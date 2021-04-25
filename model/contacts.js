@@ -1,11 +1,8 @@
-// const fs = require("fs/promises");
-// const contacts = require("./contacts.json");
 // ? для работы с db можно использовать функции lodash
 const db = require("./db");
-const { v4: uuidv4 } = require("uuid");
+
 const { ObjectId } = require("mongodb");
 
-const pathContacts = "contacts";
 const nameCollectionContacts = "contacts";
 
 const getCollection = async (db, name) => {
@@ -21,22 +18,34 @@ const listContacts = async () => {
 };
 
 const getContactById = async (contactId) => {
-  return db.get(pathContacts).find({ id: contactId }).value();
+  const collection = await getCollection(db, nameCollectionContacts);
+  const objectId = new ObjectId(contactId);
+
+  // ? здесь,через консоль показывается время создания документа на сервере (у сервера может отличатся местное время)
+  // console.log(objectId.getTimestamp());
+
+  const [result] = await collection.find({ _id: objectId }).toArray();
+
+  return result;
 };
 
 const removeContact = async (contactId) => {
-  const [record] = db.get(pathContacts).remove({ id: contactId }).write();
-  return record;
+  const collection = await getCollection(db, nameCollectionContacts);
+  const objectId = new ObjectId(contactId);
+
+  const { value: result } = await collection.findOneAndDelete({
+    _id: objectId,
+  });
+
+  return result;
 };
 
 const addContact = async (body) => {
-  // const id = uuidv4();
   const record = {
-    // id,
     ...body,
   };
-  // db.get(pathContacts).push(record).write();
   const collection = await getCollection(db, nameCollectionContacts);
+
   const {
     ops: [result],
   } = await collection.insertOne(record);
@@ -45,13 +54,18 @@ const addContact = async (body) => {
 };
 
 const updateContact = async (contactId, body) => {
-  const record = await db
-    .get(pathContacts)
-    .find({ id: contactId })
-    .assign(body)
-    .value();
-  db.write();
-  return record.id ? record : null;
+  const collection = await getCollection(db, nameCollectionContacts);
+  const objectId = new ObjectId(contactId);
+
+  const { value: result } = await collection.findOneAndUpdate(
+    {
+      _id: objectId,
+    },
+    { $set: body },
+    { returnOriginal: false }
+  );
+
+  return result;
 };
 
 module.exports = {

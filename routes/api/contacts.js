@@ -101,7 +101,7 @@ router.delete("/:contactId", async (req, res, next) => {
     } else {
       return res.status(404).json({
         status: "error",
-        code: 204,
+        code: 404,
         data: "No content",
       });
     }
