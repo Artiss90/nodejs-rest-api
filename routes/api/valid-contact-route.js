@@ -3,6 +3,7 @@ const Joi = require("joi");
 const schemaCreateContact = Joi.object({
   name: Joi.string().alphanum().min(3).max(30).required(),
   phone: Joi.string().min(3).max(20).required(),
+  favorite: Joi.boolean().optional(),
   email: Joi.string().email({
     minDomainSegments: 2,
     tlds: { allow: ["com", "net"] },
@@ -18,10 +19,11 @@ const schemaUpdateContact = Joi.object({
       tlds: { allow: ["com", "net"] },
     })
     .optional(),
+  favorite: Joi.boolean().optional(),
 }).or("name", "phone", "email");
 
-const schemaUpdatePhone = Joi.object({
-  phone: Joi.string().min(3).max(20).optional(),
+const schemaUpdateFavorite = Joi.object({
+  favorite: Joi.boolean().required(),
 });
 
 const validate = async (schema, obj, next) => {
@@ -41,7 +43,7 @@ module.exports = {
   validationUpdateContact: async (req, res, next) => {
     return await validate(schemaUpdateContact, req.body, next);
   },
-  validationUpdatePhone: async (req, res, next) => {
-    return await validate(schemaUpdatePhone, req.body, next);
+  validationChangeFavorite: async (req, res, next) => {
+    return await validate(schemaUpdateFavorite, req.body, next);
   },
 };

@@ -1,42 +1,38 @@
-// const fs = require("fs/promises");
-// const contacts = require("./contacts.json");
-// ? для работы с db можно использовать функции lodash
-const db = require("./db");
-const { v4: uuidv4 } = require("uuid");
+const Contacts = require("./schemas/contactSchema");
 
-const pathContacts = "contacts";
+// const nameCollectionContacts = "contacts";
 
 const listContacts = async () => {
-  return db.get(pathContacts).value();
+  const result = await Contacts.find();
+  return result;
 };
 
 const getContactById = async (contactId) => {
-  return db.get(pathContacts).find({ id: contactId }).value();
+  const result = await Contacts.findById(contactId);
+
+  return result;
 };
 
 const removeContact = async (contactId) => {
-  const [record] = db.get(pathContacts).remove({ id: contactId }).write();
-  return record;
+  const result = await Contacts.findByIdAndRemove(contactId);
+
+  return result;
 };
 
 const addContact = async (body) => {
-  const id = uuidv4();
-  const record = {
-    id,
-    ...body,
-  };
-  db.get(pathContacts).push(record).write();
-  return record;
+  const result = await Contacts.create(body);
+
+  return result;
 };
 
 const updateContact = async (contactId, body) => {
-  const record = await db
-    .get(pathContacts)
-    .find({ id: contactId })
-    .assign(body)
-    .value();
-  db.write();
-  return record.id ? record : null;
+  const result = await Contacts.findByIdAndUpdate(
+    contactId,
+    { ...body },
+    { new: true }
+  );
+
+  return result;
 };
 
 module.exports = {
