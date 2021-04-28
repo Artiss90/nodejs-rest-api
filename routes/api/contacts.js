@@ -113,14 +113,14 @@ router.delete("/:contactId", async (req, res, next) => {
 /*
 TODO @ PATCH /api/contacts/:contactId
 *Получает параметр contactId
-*Получает body в json-формате c обновлением  поля phone
+*Получает body в json-формате c обновлением  поля favorite
 *Вызывает функцию updateContact(contactId, body) для обновления контакта в файле contacts.json
 *Если такого id нет, возвращает json с ключом "message": "Not found" и статусом 404
 *По результату работы функции возвращает обновленный объект контакта и статусом 200. В противном случае, возвращает json с ключом "message": "Not found" и статусом 404
 */
 router.patch(
   "/:contactId",
-  validationRoute.validationUpdatePhone,
+  validationRoute.validationChangeFavorite,
   async (req, res, next) => {
     try {
       const contact = await contactsModel.updateContact(
