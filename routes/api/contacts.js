@@ -119,7 +119,7 @@ TODO @ PATCH /api/contacts/:contactId
 *По результату работы функции возвращает обновленный объект контакта и статусом 200. В противном случае, возвращает json с ключом "message": "Not found" и статусом 404
 */
 router.patch(
-  "/:contactId",
+  "/:contactId/favorite",
   validationRoute.validationChangeFavorite,
   async (req, res, next) => {
     try {
