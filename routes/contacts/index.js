@@ -1,25 +1,17 @@
 const express = require("express");
 const router = express.Router();
-const contactsModel = require("../../model/contacts.js");
+// const contactsModel = require("../../model/contacts.js");
+const ctrl = require("../../controllers/contacts");
 const validationRoute = require("./valid-contact-route.js");
+// const guard = require("../../helper/guard");
+// const passport = require("passport");
 /* 
 TODO  @ GET /api/contacts
 *ничего не получает
 *вызывает функцию listContacts для работы с json-файлом contacts.json
 *возвращает массив всех контактов в json-формате со статусом 200 
 */
-router.get("/", async (req, res, next) => {
-  try {
-    const contacts = await contactsModel.listContacts();
-    return res.json({
-      status: "success",
-      code: 200,
-      data: { contacts },
-    });
-  } catch (error) {
-    next(error);
-  }
-});
+router.get("/", ctrl.getAll);
 
 /*
 TODO @ GET /api/contacts/:contactId
@@ -29,28 +21,7 @@ TODO @ GET /api/contacts/:contactId
 *если такой id есть, возвращает объект контакта в json-формате со статусом 200
 *если такого id нет, возвращает json с ключом "message": "Not found" и статусом 404
 */
-router.get("/:contactId", async (req, res, next) => {
-  try {
-    const contact = await contactsModel.getContactById(req.params.contactId);
-    if (contact) {
-      return res.json({
-        status: "success",
-        code: 200,
-        data: {
-          contact,
-        },
-      });
-    } else {
-      return res.status(404).json({
-        status: "error",
-        code: 404,
-        data: "Not found",
-      });
-    }
-  } catch (error) {
-    next(error);
-  }
-});
+router.get("/:contactId", ctrl.getById);
 
 /*
 TODO @ POST /api/contacts
@@ -60,24 +31,7 @@ TODO @ POST /api/contacts
 *Вызывает функцию addContact(body) для сохранения контакта в файле contacts.json
 *По результату работы функции возвращает объект с добавленным id {id, name, email, phone} и статусом 201
 */
-router.post(
-  "/",
-  validationRoute.validationCreateContact,
-  async (req, res, next) => {
-    try {
-      const contacts = await contactsModel.addContact(req.body);
-      return res.status(201).json({
-        status: "success",
-        code: 201,
-        data: {
-          contacts,
-        },
-      });
-    } catch (error) {
-      next(error);
-    }
-  }
-);
+router.post("/", validationRoute.validationCreateContact, ctrl.create);
 
 /*
 TODO @ DELETE /api/contacts/:contactId
@@ -87,31 +41,10 @@ TODO @ DELETE /api/contacts/:contactId
 *если такой id есть, возвращает json формата {"message": "contact deleted"} и статусом 200
 *если такого id нет, возвращает json с ключом "message": "No content" и статусом 204
 */
-router.delete("/:contactId", async (req, res, next) => {
-  try {
-    const contact = await contactsModel.removeContact(req.params.contactId);
-    if (contact) {
-      return res.json({
-        status: "success",
-        code: 200,
-        data: {
-          contact,
-        },
-      });
-    } else {
-      return res.status(404).json({
-        status: "error",
-        code: 404,
-        data: "No content",
-      });
-    }
-  } catch (error) {
-    next(error);
-  }
-});
+router.delete("/:contactId", ctrl.remove);
 
 /*
-TODO @ PATCH /api/contacts/:contactId
+TODO @ PATCH /api/contacts/:contactId/favorite
 *Получает параметр contactId
 *Получает body в json-формате c обновлением  поля favorite
 *Вызывает функцию updateContact(contactId, body) для обновления контакта в файле contacts.json
@@ -121,31 +54,7 @@ TODO @ PATCH /api/contacts/:contactId
 router.patch(
   "/:contactId/favorite",
   validationRoute.validationChangeFavorite,
-  async (req, res, next) => {
-    try {
-      const contact = await contactsModel.updateContact(
-        req.params.contactId,
-        req.body
-      );
-      if (contact) {
-        return res.json({
-          status: "success",
-          code: 200,
-          data: {
-            contact,
-          },
-        });
-      } else {
-        return res.status(404).json({
-          status: "error",
-          code: 404,
-          data: "Not found",
-        });
-      }
-    } catch (error) {
-      next(error);
-    }
-  }
+  ctrl.updateStatus
 );
 
 /*
@@ -156,34 +65,6 @@ TODO @ PUT /api/contacts/:contactId
 *Если с body все хорошо, вызывает функцию updateContact(contactId, body) (напиши ее) для обновления контакта в файле contacts.json
 *По результату работы функции возвращает обновленный объект контакта и статусом 200. В противном случае, возвращает json с ключом "message": "Not found" и статусом 404
 */
-router.put(
-  "/:contactId",
-  validationRoute.validationUpdateContact,
-  async (req, res, next) => {
-    try {
-      const contact = await contactsModel.updateContact(
-        req.params.contactId,
-        req.body
-      );
-      if (contact) {
-        return res.json({
-          status: "success",
-          code: 200,
-          data: {
-            contact,
-          },
-        });
-      } else {
-        return res.status(404).json({
-          status: "error",
-          code: 404,
-          data: "Not found",
-        });
-      }
-    } catch (error) {
-      next(error);
-    }
-  }
-);
+router.put("/:contactId", validationRoute.validationUpdateContact, ctrl.update);
 
 module.exports = router;

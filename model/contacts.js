@@ -1,7 +1,5 @@
 const Contacts = require("./schemas/contactSchema");
 
-// const nameCollectionContacts = "contacts";
-
 const listContacts = async () => {
   const result = await Contacts.find();
   return result;
