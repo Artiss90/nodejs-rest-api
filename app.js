@@ -18,7 +18,7 @@ app.use(
     optionsSuccessStatus: 204,
   })
 );
-app.use(express.json());
+app.use(express.json({ limit: 100000 }));
 
 app.use("/api/contacts", contactsRouter);
 app.use("/api/users", usersRouter);

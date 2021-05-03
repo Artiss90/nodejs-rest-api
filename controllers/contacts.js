@@ -58,21 +58,19 @@ TODO @ POST /api/contacts
 *По результату работы функции возвращает объект с добавленным id {id, name, email, phone} и статусом 201
 */
 const create = async (req, res, next) => {
-    try {
-      const contacts = await Contacts.addContact(req.body);
-      return res.status(201).json({
-        status: "success",
-        code: 201,
-        data: {
-          contacts,
-        },
-      });
-    } catch (error) {
-      next(error);
-    }
+  try {
+    const contacts = await Contacts.addContact(req.body);
+    return res.status(201).json({
+      status: "success",
+      code: 201,
+      data: {
+        contacts,
+      },
+    });
+  } catch (error) {
+    next(error);
   }
-;
-
+};
 /*
 TODO @ DELETE /api/contacts/:contactId
 *Не получает body
@@ -113,32 +111,30 @@ TODO @ PATCH /api/contacts/:contactId/favorite
 *По результату работы функции возвращает обновленный объект контакта и статусом 200. В противном случае, возвращает json с ключом "message": "Not found" и статусом 404
 */
 const updateStatus = async (req, res, next) => {
-    try {
-      const contact = await Contacts.updateContact(
-        req.params.contactId,
-        req.body
-      );
-      if (contact) {
-        return res.json({
-          status: "success",
-          code: 200,
-          data: {
-            contact,
-          },
-        });
-      } else {
-        return res.status(404).json({
-          status: "error",
-          code: 404,
-          data: "Not found",
-        });
-      }
-    } catch (error) {
-      next(error);
+  try {
+    const contact = await Contacts.updateContact(
+      req.params.contactId,
+      req.body
+    );
+    if (contact) {
+      return res.json({
+        status: "success",
+        code: 200,
+        data: {
+          contact,
+        },
+      });
+    } else {
+      return res.status(404).json({
+        status: "error",
+        code: 404,
+        data: "Not found",
+      });
     }
+  } catch (error) {
+    next(error);
   }
-;
-
+};
 /*
 TODO @ PUT /api/contacts/:contactId
 *Получает параметр contactId
@@ -148,32 +144,30 @@ TODO @ PUT /api/contacts/:contactId
 *По результату работы функции возвращает обновленный объект контакта и статусом 200. В противном случае, возвращает json с ключом "message": "Not found" и статусом 404
 */
 const update = async (req, res, next) => {
-    try {
-      const contact = await Contacts.updateContact(
-        req.params.contactId,
-        req.body
-      );
-      if (contact) {
-        return res.json({
-          status: "success",
-          code: 200,
-          data: {
-            contact,
-          },
-        });
-      } else {
-        return res.status(404).json({
-          status: "error",
-          code: 404,
-          data: "Not found",
-        });
-      }
-    } catch (error) {
-      next(error);
+  try {
+    const contact = await Contacts.updateContact(
+      req.params.contactId,
+      req.body
+    );
+    if (contact) {
+      return res.json({
+        status: "success",
+        code: 200,
+        data: {
+          contact,
+        },
+      });
+    } else {
+      return res.status(404).json({
+        status: "error",
+        code: 404,
+        data: "Not found",
+      });
     }
+  } catch (error) {
+    next(error);
   }
-;
-
+};
 module.exports = {
   getAll,
   getById,

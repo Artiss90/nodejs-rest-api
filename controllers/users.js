@@ -52,6 +52,7 @@ const login = async (req, res, next) => {
 };
 
 const logout = async (req, res, next) => {
+  console.log("🚀 ~ file: users.js ~ line 55 ~ logout ~ req", req);
   const id = req.user.id;
   await Users.updateToken(id, null);
   return res.status(HttpCode.NO_CONTENT).json({});

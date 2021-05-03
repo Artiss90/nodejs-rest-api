@@ -45,7 +45,6 @@ schemaUser.pre("save", async function (next) {
 });
 
 schemaUser.methods.validPassword = async function (password) {
-  console.log("🚀 ~ file: userSchema.js ~ line 48 ~ password", password);
   return await bcrypt.compare(String(password), this.password);
 };
 const UserSchema = model("user", schemaUser);
