@@ -22,7 +22,7 @@ const reg = async (req, res, next) => {
       data: {
         id: newUser.id,
         email: newUser.email,
-        gender: newUser.gender,
+        subscription: newUser.subscription,
       },
     });
   } catch (e) {
@@ -52,14 +52,62 @@ const login = async (req, res, next) => {
 };
 
 const logout = async (req, res, next) => {
-  console.log("🚀 ~ file: users.js ~ line 55 ~ logout ~ req", req);
-  const id = req.user.id;
+  const id = req.user?.id;
   await Users.updateToken(id, null);
   return res.status(HttpCode.NO_CONTENT).json({});
 };
 
+const updateSubscription = async (req, res, next) => {
+  const id = req.user?.id;
+  const subscription = req.body.subscription;
+
+  await Users.updateSubscribe(id, subscription);
+  const updateUser = await Users.findById(id);
+
+  return res.status(HttpCode.OK).json({
+    status: "success",
+    code: HttpCode.OK,
+    data: { email: updateUser.email, subscription: updateUser.subscription },
+  });
+};
+
+const current = async (req, res, next) => {
+  const id = req.user?.id;
+  const { email, subscription } = await Users.findById(id);
+  return res.status(HttpCode.OK).json({
+    status: "success",
+    code: HttpCode.OK,
+    data: {
+      email: email,
+      subscription: subscription,
+    },
+  });
+};
+
+const onlyPro = async (req, res, next) => {
+  return res.json({
+    status: "success",
+    code: 200,
+    data: {
+      message: "Only Pro",
+    },
+  });
+};
+const onlyBusiness = async (req, res, next) => {
+  return res.json({
+    status: "success",
+    code: 200,
+    data: {
+      message: "Only Business",
+    },
+  });
+};
 module.exports = {
   reg,
   login,
   logout,
+  updateSubscription,
+  current,
+  onlyPro,
+  onlyBusiness,
 };

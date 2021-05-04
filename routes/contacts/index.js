@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-// const contactsModel = require("../../model/contacts.js");
 const ctrl = require("../../controllers/contacts");
 const validationRoute = require("./valid-contact-route.js");
 const guard = require("../../helper/guard");
@@ -11,7 +10,7 @@ TODO  @ GET /api/contacts
 *вызывает функцию listContacts для работы с json-файлом contacts.json
 *возвращает массив всех контактов в json-формате со статусом 200 
 */
-router.get("/", guard, ctrl.getAll);
+router.get("/", guard, validationRoute.validationQueryContact, ctrl.getAll);
 
 /*
 TODO @ GET /api/contacts/:contactId
@@ -21,7 +20,12 @@ TODO @ GET /api/contacts/:contactId
 *если такой id есть, возвращает объект контакта в json-формате со статусом 200
 *если такого id нет, возвращает json с ключом "message": "Not found" и статусом 404
 */
-router.get("/:contactId", guard, ctrl.getById);
+router.get(
+  "/:contactId",
+  guard,
+  validationRoute.validationObjectId,
+  ctrl.getById
+);
 
 /*
 TODO @ POST /api/contacts
@@ -41,7 +45,12 @@ TODO @ DELETE /api/contacts/:contactId
 *если такой id есть, возвращает json формата {"message": "contact deleted"} и статусом 200
 *если такого id нет, возвращает json с ключом "message": "No content" и статусом 204
 */
-router.delete("/:contactId", guard, ctrl.remove);
+router.delete(
+  "/:contactId",
+  guard,
+  validationRoute.validationObjectId,
+  ctrl.remove
+);
 
 /*
 TODO @ PATCH /api/contacts/:contactId/favorite

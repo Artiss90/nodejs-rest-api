@@ -7,7 +7,8 @@ TODO  @ GET /api/contacts
 */
 const getAll = async (req, res, next) => {
   try {
-    const contacts = await Contacts.listContacts();
+    const userId = req.user?.id;
+    const contacts = await Contacts.listContacts(userId, req.query);
     return res.json({
       status: "success",
       code: 200,
@@ -28,7 +29,8 @@ TODO @ GET /api/contacts/:contactId
 */
 const getById = async (req, res, next) => {
   try {
-    const contact = await Contacts.getContactById(req.params.contactId);
+    const userId = req.user?.id;
+    const contact = await Contacts.getContactById(userId, req.params.contactId);
     if (contact) {
       return res.json({
         status: "success",
@@ -59,7 +61,8 @@ TODO @ POST /api/contacts
 */
 const create = async (req, res, next) => {
   try {
-    const contacts = await Contacts.addContact(req.body);
+    const userId = req.user?.id;
+    const contacts = await Contacts.addContact(userId, req.body);
     return res.status(201).json({
       status: "success",
       code: 201,
@@ -81,7 +84,8 @@ TODO @ DELETE /api/contacts/:contactId
 */
 const remove = async (req, res, next) => {
   try {
-    const contact = await Contacts.removeContact(req.params.contactId);
+    const userId = req.user?.id;
+    const contact = await Contacts.removeContact(userId, req.params.contactId);
     if (contact) {
       return res.json({
         status: "success",
@@ -112,7 +116,9 @@ TODO @ PATCH /api/contacts/:contactId/favorite
 */
 const updateStatus = async (req, res, next) => {
   try {
+    const userId = req.user?.id;
     const contact = await Contacts.updateContact(
+      userId,
       req.params.contactId,
       req.body
     );
@@ -145,7 +151,9 @@ TODO @ PUT /api/contacts/:contactId
 */
 const update = async (req, res, next) => {
   try {
+    const userId = req.user?.id;
     const contact = await Contacts.updateContact(
+      userId,
       req.params.contactId,
       req.body
     );
@@ -168,6 +176,7 @@ const update = async (req, res, next) => {
     next(error);
   }
 };
+
 module.exports = {
   getAll,
   getById,
