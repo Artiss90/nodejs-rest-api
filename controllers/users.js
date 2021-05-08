@@ -2,6 +2,9 @@ const Users = require("../model/users");
 const { HttpCode } = require("../helper/constants");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
+// const jimp = require("jimp");
+// const fs = require("fs/promises");
+// const path = require("path");
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
 
 const reg = async (req, res, next) => {
@@ -102,6 +105,23 @@ const onlyBusiness = async (req, res, next) => {
     },
   });
 };
+
+const updateAvatar = async (req, res, next) => {
+  // const { id } = req.user;
+  // const avatarUrl = await saveAvatarUser(req);
+  // await Users.updateAvatar(id, avatarUrl);
+  // const { idCloudAvatar, avatarUrl } = await saveAvatarUserToCloud(req);
+  // await Users.updateAvatar(id, avatarUrl, idCloudAvatar);
+  // return res
+  //   .status(HttpCode.OK)
+  //   .json({ status: "success", code: HttpCode.OK, data: { avatarUrl } });
+  return res.status(HttpCode.OK).json({
+    status: "success",
+    code: HttpCode.OK,
+    data: req?.file?.originalname,
+  });
+};
+
 module.exports = {
   reg,
   login,
@@ -110,4 +130,5 @@ module.exports = {
   current,
   onlyPro,
   onlyBusiness,
+  updateAvatar,
 };
