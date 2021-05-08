@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const { Schema, model } = mongoose;
+const gravatar = require("gravatar");
 const { Subscription } = require("../../helper/constants");
 const bcrypt = require("bcryptjs");
 const SALT_FACTOR = 6;
@@ -31,7 +32,10 @@ const schemaUser = new Schema(
       type: String,
       default: null,
     },
-    avatarURL: String,
+    avatarURL: {
+      type: String,
+      default: gravatar.url(this.email, { s: "250" }, true),
+    },
   },
   { timestamps: true }
 );

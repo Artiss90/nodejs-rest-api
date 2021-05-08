@@ -1,10 +1,10 @@
+const jimp = require("jimp");
+const fs = require("fs/promises");
+const path = require("path");
 const Users = require("../model/users");
 const { HttpCode } = require("../helper/constants");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
-// const jimp = require("jimp");
-// const fs = require("fs/promises");
-// const path = require("path");
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
 
 const reg = async (req, res, next) => {
@@ -26,6 +26,7 @@ const reg = async (req, res, next) => {
         id: newUser.id,
         email: newUser.email,
         subscription: newUser.subscription,
+        avatar: newUser.avatarURL,
       },
     });
   } catch (e) {
@@ -76,13 +77,14 @@ const updateSubscription = async (req, res, next) => {
 
 const current = async (req, res, next) => {
   const id = req.user?.id;
-  const { email, subscription } = await Users.findById(id);
+  const { email, subscription, avatarURL } = await Users.findById(id);
   return res.status(HttpCode.OK).json({
     status: "success",
     code: HttpCode.OK,
     data: {
       email: email,
       subscription: subscription,
+      avatar: avatarURL,
     },
   });
 };
@@ -107,19 +109,43 @@ const onlyBusiness = async (req, res, next) => {
 };
 
 const updateAvatar = async (req, res, next) => {
-  // const { id } = req.user;
-  // const avatarUrl = await saveAvatarUser(req);
-  // await Users.updateAvatar(id, avatarUrl);
+  const { id } = req.user;
+  const avatarUrl = await saveAvatarUser(req);
+  await Users.updateAvatar(id, avatarUrl);
   // const { idCloudAvatar, avatarUrl } = await saveAvatarUserToCloud(req);
   // await Users.updateAvatar(id, avatarUrl, idCloudAvatar);
-  // return res
-  //   .status(HttpCode.OK)
-  //   .json({ status: "success", code: HttpCode.OK, data: { avatarUrl } });
-  return res.status(HttpCode.OK).json({
-    status: "success",
-    code: HttpCode.OK,
-    data: req?.file?.originalname,
-  });
+  return res
+    .status(HttpCode.OK)
+    .json({ status: "success", code: HttpCode.OK, data: { avatarUrl } });
+};
+
+const saveAvatarUser = async (req) => {
+  const FOLDER_AVATARS = process.env.FOLDER_AVATARS;
+  const pathFile = req.file.path;
+  const newNameAvatar = `${Date.now().toString()}-${req.file.originalname}`;
+  const img = await jimp.read(pathFile);
+  await img
+    .autocrop()
+    .cover(250, 250, jimp.HORIZONTAL_ALIGN_CENTER | jimp.VERTICAL_ALIGN_MIDDLE)
+    .writeAsync(pathFile);
+  try {
+    await fs.rename(
+      pathFile,
+      path.join(process.cwd(), "public", FOLDER_AVATARS, newNameAvatar)
+    );
+  } catch (e) {
+    console.log(e.message);
+  }
+  console.log(
+    "🚀 ~ file: users.js ~ line 140 ~ saveAvatarUser ~ pathFile",
+    pathFile
+  );
+  // ? удаляем старый аватар с временного хранилища
+  // const oldAvatar = req.user.avatarURL;
+  // if (oldAvatar.includes(`${FOLDER_AVATARS}/`)) {
+  //   await fs.unlink(path.join(process.cwd(), "public", oldAvatar));
+  // }
+  return path.join(FOLDER_AVATARS, newNameAvatar).replace("\\", "/"); // регулярка для  замены слэша
 };
 
 module.exports = {

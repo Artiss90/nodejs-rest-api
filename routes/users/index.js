@@ -10,7 +10,7 @@ const uploadAvatar = require("../../helper/upload-avatar");
 
 const limiterRegister = rateLimit({
   windowMs: 60 * 60 * 1000, // 15 minutes
-  max: 2, // limit each IP to 2 requests per windowMs
+  max: 10, // limit each IP to 10 requests per windowMs
   handler: (req, res, next) => {
     return res.status(429).json({
       status: "error",
