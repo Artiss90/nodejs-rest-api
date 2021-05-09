@@ -26,6 +26,7 @@ const limiter = rateLimit({
 
 app.use(helmet());
 app.use(logger(formatsLogger));
+app.use(express.static("public"));
 app.use(limiter);
 app.use(
   cors({

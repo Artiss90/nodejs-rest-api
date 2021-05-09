@@ -136,15 +136,12 @@ const saveAvatarUser = async (req) => {
   } catch (e) {
     console.log(e.message);
   }
-  console.log(
-    "🚀 ~ file: users.js ~ line 140 ~ saveAvatarUser ~ pathFile",
-    pathFile
-  );
+
   // ? удаляем старый аватар с временного хранилища
-  // const oldAvatar = req.user.avatarURL;
-  // if (oldAvatar.includes(`${FOLDER_AVATARS}/`)) {
-  //   await fs.unlink(path.join(process.cwd(), "public", oldAvatar));
-  // }
+  const oldAvatar = req.user.avatarURL;
+  if (oldAvatar.includes(`${FOLDER_AVATARS}/`)) {
+    await fs.unlink(path.join(process.cwd(), "public", oldAvatar));
+  }
   return path.join(FOLDER_AVATARS, newNameAvatar).replace("\\", "/"); // регулярка для  замены слэша
 };
 
