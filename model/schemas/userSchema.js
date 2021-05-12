@@ -38,6 +38,10 @@ const schemaUser = new Schema(
         return gravatar.url(this.email, { s: "250" }, true);
       },
     },
+    idCloudAvatar: {
+      type: String,
+      default: null,
+    },
   },
   { timestamps: true }
 );
