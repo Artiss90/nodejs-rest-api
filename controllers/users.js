@@ -119,6 +119,16 @@ const onlyBusiness = async (req, res, next) => {
 
 const updateAvatar = async (req, res, next) => {
   const { id } = req.user;
+  if (!req?.file?.path) {
+    return res
+      .status(HttpCode.OK)
+      .json({
+        status: "error",
+        code: HttpCode.BAD_REQUEST,
+        data: "Bad request",
+      });
+  }
+
   // ? стандартное использование - задействуем saveAvatarUser
   // const avatarUrl = await saveAvatarUser(req);
   // await Users.updateAvatar(id, avatarUrl);
