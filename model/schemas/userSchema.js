@@ -34,7 +34,9 @@ const schemaUser = new Schema(
     },
     avatarURL: {
       type: String,
-      default: gravatar.url(this.email, { s: "250" }, true),
+      default: function () {
+        return gravatar.url(this.email, { s: "250" }, true);
+      },
     },
   },
   { timestamps: true }
