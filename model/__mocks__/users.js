@@ -1,6 +1,6 @@
 const { users } = require("./data");
 const bcrypt = require("bcryptjs");
-const SALT_WORK_FACTOR = 6;
+const SALT_WORK_FACTOR = 10;
 
 const findById = jest.fn((id) => {
   const [user] = users.filter((el) => String(el._id) === String(id));
@@ -25,6 +25,7 @@ const create = jest.fn(
       password: pass,
       subscription,
       _id: "5f8382425ba83a4f1829ca7d",
+      id: "5f8382425ba83a4f1829ca7d",
       validPassword: function (pass) {
         return bcrypt.compareSync(pass, this.password);
       },

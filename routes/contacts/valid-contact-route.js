@@ -60,7 +60,12 @@ module.exports = {
     return await validate(schemaQueryContact, req.query, next);
   },
   validationObjectId: async (req, res, next) => {
-    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+    let par = req.params;
+    console.log(
+      "🚀 ~ file: valid-contact-route.js ~ line 64 ~ validationObjectId: ~ par",
+      par
+    );
+    if (!mongoose.Types.ObjectId.isValid(req.params.contactId)) {
       return next({ status: 400, message: "Invalid Object Id" });
     }
     next();

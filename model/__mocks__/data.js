@@ -1,19 +1,26 @@
 const contacts = [
   {
-    _id: "6089aed7d4ad2f2a8cb9f49b",
+    _id: "609109aa29e26d0d0480430f",
     favorite: true,
     name: "olia",
     phone: "455-88-55",
     email: "kolia@gmail.com",
     owner: "60905bec49fc3324f0019f16",
   },
-
   {
     _id: "6089aeac68c3cd1a74991a3a",
     favorite: false,
     name: "Kolia",
     phone: "455-88-79",
     email: "kolia@gmail.com",
+    owner: "60905bec49fc3324f0019f16",
+  },
+  {
+    _id: "6089aeac68c3cd1a74991a3d",
+    favorite: false,
+    name: "KoliaNew",
+    phone: "455-88-79",
+    email: "lia@gmail.com",
     owner: "60905bec49fc3324f0019f16",
   },
 ];
