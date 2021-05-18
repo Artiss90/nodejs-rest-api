@@ -26,12 +26,10 @@ const contacts = [
 ];
 
 const newContact = {
-  _id: "6089af4ed4ad2f2a8cb9f49e",
   favorite: false,
   name: "Test",
   phone: "455-88-79",
   email: "kolia@gmail.com",
-  owner: "60905bec49fc3324f0019f16",
 };
 
 const User = {
