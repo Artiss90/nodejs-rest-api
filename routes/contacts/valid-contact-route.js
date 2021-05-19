@@ -60,7 +60,7 @@ module.exports = {
     return await validate(schemaQueryContact, req.query, next);
   },
   validationObjectId: async (req, res, next) => {
-    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+    if (!mongoose.Types.ObjectId.isValid(req.params.contactId)) {
       return next({ status: 400, message: "Invalid Object Id" });
     }
     next();
