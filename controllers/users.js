@@ -75,6 +75,13 @@ const login = async (req, res, next) => {
       message: "Invalid credentials",
     });
   }
+  if (!user.verify) {
+    return res.status(HttpCode.UNAUTHORIZED).json({
+      status: "error",
+      code: HttpCode.UNAUTHORIZED,
+      message: "Is not verify",
+    });
+  }
   const payload = { id: user.id };
   const token = jwt.sign(payload, JWT_SECRET_KEY, { expiresIn: "2h" });
   await Users.updateToken(user.id, token);
