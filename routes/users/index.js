@@ -53,4 +53,8 @@ router.patch(
   ctrl.updateAvatar
 );
 
+// TODO верификация токена
+router.get("/verify/:token", ctrl.verify);
+router.post("/verify", ctrl.repeatEmailVerify);
+
 module.exports = router;

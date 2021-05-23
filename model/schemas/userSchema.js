@@ -3,6 +3,8 @@ const { Schema, model } = mongoose;
 const gravatar = require("gravatar");
 const { Subscription } = require("../../helper/constants");
 const bcrypt = require("bcryptjs");
+const { v4: uuidv4 } = require("uuid");
+
 const SALT_FACTOR = 6;
 
 const schemaUser = new Schema(
@@ -41,6 +43,15 @@ const schemaUser = new Schema(
     idCloudAvatar: {
       type: String,
       default: null,
+    },
+    verify: {
+      type: Boolean,
+      default: false,
+    },
+    verifyTokenEmail: {
+      type: String,
+      required: true,
+      default: uuidv4(),
     },
   },
   { timestamps: true }
